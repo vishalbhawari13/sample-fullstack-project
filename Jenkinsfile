@@ -13,7 +13,12 @@ pipeline {
                 dir('backend') {
                     script {
                         docker.image('maven:3.9.11-eclipse-temurin-17').inside {
-                            sh 'mvn -B clean package -DskipTests'
+
+                            // Clear local Maven repo cache
+                            sh 'rm -rf /root/.m2/repository/*'
+
+                             // Force Maven to update dependencies
+                            sh 'mvn -B clean package -U -DskipTests'
                         }
                     }
                 }
